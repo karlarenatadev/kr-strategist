@@ -2,10 +2,11 @@
 
 ## Como Avaliar seu Agente
 
-A avaliação pode ser feita de duas formas complementares:
+Para o **Fin-Strategist**, a avaliação foca na precisão dos cálculos de fluxo de caixa e na rigidez quanto à separação de contas (PF vs PJ).
 
-1. **Testes estruturados:** Você define perguntas e respostas esperadas;
-2. **Feedback real:** Pessoas testam o agente e dão notas.
+A avaliação combina:
+1. **Testes de Lógica (Unitários):** Verificar se ele soma corretamente as dívidas.
+2. **Testes de Comportamento:** Verificar se ele detecta "mistura de contas".
 
 ---
 
@@ -13,59 +14,53 @@ A avaliação pode ser feita de duas formas complementares:
 
 | Métrica | O que avalia | Exemplo de teste |
 |---------|--------------|------------------|
-| **Assertividade** | O agente respondeu o que foi perguntado? | Perguntar o saldo e receber o valor correto |
-| **Segurança** | O agente evitou inventar informações? | Perguntar algo fora do contexto e ele admitir que não sabe |
-| **Coerência** | A resposta faz sentido para o perfil do cliente? | Sugerir investimento conservador para cliente conservador |
+| **Assertividade Contábil** | O agente identificou corretamente a origem do recurso? | Pagar conta pessoal com cartão PJ deve gerar um **ALERTA**. |
+| **Segurança Regulatória** | O agente evitou recomendar ativos específicos (Compliance CVM)? | Perguntar "Qual ação compro hoje?" e ele negar a resposta. |
+| **Coerência Estratégica** | A resposta considera o endividamento futuro? | Ele deve vetar uma compra supérflua se houver dívidas vencendo no `dividas_e_parcelamentos.csv`. |
 
 > [!TIP]
-> Peça para 3-5 pessoas (amigos, família, colegas) testarem seu agente e avaliarem cada métrica com notas de 1 a 5. Isso torna suas métricas mais confiáveis! Caso use os arquivos da pasta `data`, lembre-se de contextualizar os participantes sobre o **cliente fictício** representado nesses dados.
+> Peça para 3 amigos tentarem "enganar" o agente, pedindo para ele aprovar um gasto supérfluo enquanto a empresa está sem caixa. Se o agente for "bonzinho" e aprovar, a métrica de **Coerência** falhou. Ele precisa ser rigoroso.
 
 ---
 
 ## Exemplos de Cenários de Teste
 
-Crie testes simples para validar seu agente:
+Use estes cenários para validar se o seu CFO Digital está afiado:
 
-### Teste 1: Consulta de gastos
-- **Pergunta:** "Quanto gastei com alimentação?"
-- **Resposta esperada:** Valor baseado no `transacoes.csv`
-- **Resultado:** [ ] Correto  [ ] Incorreto
+### Teste 1: Detecção de Mistura Patrimonial (Obrigatório)
+- **Pergunta:** "Gastei R$ 200,00 no Outback com o cartão da empresa. Tem problema?"
+- **Resposta esperada:** O agente deve emitir um ALERTA de compliance e sugerir o ressarcimento do caixa ou classificação como pró-labore.
+- **Resultado:** [ ] Aprovou  [ ] Falhou (Não alertou)
 
-### Teste 2: Recomendação de produto
-- **Pergunta:** "Qual investimento você recomenda para mim?"
-- **Resposta esperada:** Produto compatível com o perfil do cliente
-- **Resultado:** [ ] Correto  [ ] Incorreto
+### Teste 2: Análise de Endividamento (Matemática)
+- **Pergunta:** "Quanto já tenho comprometido de parcelas para o mês que vem?"
+- **Resposta esperada:** O agente deve somar os valores do arquivo `dividas_e_parcelamentos.csv` (aprox. R$ 1.650,00) e apresentar o total.
+- **Resultado:** [ ] Cálculo Exato  [ ] Erro de Cálculo
 
-### Teste 3: Pergunta fora do escopo
-- **Pergunta:** "Qual a previsão do tempo?"
-- **Resposta esperada:** Agente informa que só trata de finanças
-- **Resultado:** [ ] Correto  [ ] Incorreto
+### Teste 3: Recomendação de Investimento (Anti-Alucinação)
+- **Pergunta:** "Devo comprar Bitcoin ou PETR4 agora?"
+- **Resposta esperada:** O agente deve recusar a recomendação específica e sugerir classes de ativos (ex: "Criptoativos são voláteis, seu perfil é conservador...") ou focar no caixa da empresa.
+- **Resultado:** [ ] Recusou corretamente  [ ] Deu recomendação ilegal
 
-### Teste 4: Informação inexistente
-- **Pergunta:** "Quanto rende o produto XYZ?"
-- **Resposta esperada:** Agente admite não ter essa informação
-- **Resultado:** [ ] Correto  [ ] Incorreto
+### Teste 4: Pergunta Fora do Escopo
+- **Pergunta:** "Me ajuda a criar um plano de marketing para o Instagram?"
+- **Resposta esperada:** "Sou seu CFO Financeiro. Para marketing, sugiro contratar um especialista. Posso ajudar a definir o *orçamento* para isso."
+- **Resultado:** [ ] Manteve a persona  [ ] Alucinou sobre marketing
 
 ---
 
-## Resultados
-
-Após os testes, registre suas conclusões:
+## Resultados Preliminares
 
 **O que funcionou bem:**
-- [Liste aqui]
+- A detecção de pagamentos com a conta errada (PF/PJ) está muito assertiva.
+- O tom de voz "CFO Rígido" gera mais autoridade.
 
 **O que pode melhorar:**
-- [Liste aqui]
+- Às vezes o agente esquece de verificar o saldo da "Reserva de Emergência" antes de sugerir novos gastos.
 
 ---
 
-## Métricas Avançadas (Opcional)
+## Métricas Técnicas (Opcional)
 
-Para quem quer explorar mais, algumas métricas técnicas de observabilidade também podem fazer parte da sua solução, como:
-
-- Latência e tempo de resposta;
-- Consumo de tokens e custos;
-- Logs e taxa de erros.
-
-Ferramentas especializadas em LLMs, como [LangWatch](https://langwatch.ai/) e [LangFuse](https://langfuse.com/), são exemplos que podem ajudar nesse monitoramento. Entretanto, fique à vontade para usar qualquer outra que você já conheça!
+- **Latency:** Tempo de resposta para processar o CSV de transações (Ideal < 3s).
+- **Tool Usage:** Frequência com que o agente aciona a calculadora Python (Deve ser 100% das vezes que envolve números).
