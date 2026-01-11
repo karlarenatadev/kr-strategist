@@ -1,42 +1,82 @@
 [
   {
-    "nome": "Tesouro Selic",
+    "nome": "Tesouro Selic 2029",
     "categoria": "renda_fixa",
     "risco": "baixo",
-    "rentabilidade": "100% da Selic",
-    "aporte_minimo": 30.00,
-    "indicado_para": "Reserva de emergência e iniciantes"
+    "rentabilidade": "100% da Selic + 0,15%",
+    "aporte_minimo": 150.00,
+    "indicado_para": "Reserva de emergência e caixa da empresa"
   },
   {
-    "nome": "CDB Liquidez Diária",
+    "nome": "CDB Banco Digital",
     "categoria": "renda_fixa",
     "risco": "baixo",
-    "rentabilidade": "102% do CDI",
-    "aporte_minimo": 100.00,
-    "indicado_para": "Quem busca segurança com rendimento diário"
+    "rentabilidade": "100% do CDI",
+    "aporte_minimo": 1.00,
+    "indicado_para": "Capital de giro com liquidez imediata"
   },
   {
-    "nome": "LCI/LCA",
+    "nome": "CDB Pós-Fixado 2 Anos",
     "categoria": "renda_fixa",
     "risco": "baixo",
-    "rentabilidade": "95% do CDI",
+    "rentabilidade": "115% do CDI",
     "aporte_minimo": 1000.00,
-    "indicado_para": "Quem pode esperar 90 dias (isento de IR)"
+    "indicado_para": "Metas de médio prazo (troca de equipamentos)"
   },
   {
-    "nome": "Fundo Multimercado",
+    "nome": "LCI Imobiliária 90 dias",
+    "categoria": "renda_fixa",
+    "risco": "baixo",
+    "rentabilidade": "94% do CDI (Isento IR)",
+    "aporte_minimo": 5000.00,
+    "indicado_para": "Dinheiro parado por 3 meses com isenção fiscal"
+  },
+  {
+    "nome": "Tesouro IPCA+ 2035",
+    "categoria": "renda_fixa",
+    "risco": "medio",
+    "rentabilidade": "IPCA + 6,10%",
+    "aporte_minimo": 35.00,
+    "indicado_para": "Aposentadoria e proteção contra inflação"
+  },
+  {
+    "nome": "Fundo Multimercado Strategy",
     "categoria": "fundo",
     "risco": "medio",
-    "rentabilidade": "CDI + 2%",
+    "rentabilidade": "CDI + 3%",
     "aporte_minimo": 500.00,
-    "indicado_para": "Perfil moderado que busca diversificação"
+    "indicado_para": "Diversificação da carteira pessoal"
   },
   {
-    "nome": "Fundo de Ações",
+    "nome": "Fundo de Ações Dividendos",
     "categoria": "fundo",
     "risco": "alto",
-    "rentabilidade": "Variável",
+    "rentabilidade": "Variável (Histórico 15% a.a.)",
+    "aporte_minimo": 1000.00,
+    "indicado_para": "Geração de renda passiva longo prazo"
+  },
+  {
+    "nome": "ETF IVVB11 (S&P 500)",
+    "categoria": "renda_variavel",
+    "risco": "alto",
+    "rentabilidade": "Dolarizada",
+    "aporte_minimo": 300.00,
+    "indicado_para": "Exposição internacional"
+  },
+  {
+    "nome": "Fundo Imobiliário (FII) Logística",
+    "categoria": "renda_variavel",
+    "risco": "medio",
+    "rentabilidade": "Dividend Yield 0,8% a.m.",
     "aporte_minimo": 100.00,
-    "indicado_para": "Perfil arrojado com foco no longo prazo"
+    "indicado_para": "Renda mensal isenta de IR"
+  },
+  {
+    "nome": "Previdência Privada VGBL",
+    "categoria": "previdencia",
+    "risco": "baixo",
+    "rentabilidade": "105% do CDI",
+    "aporte_minimo": 200.00,
+    "indicado_para": "Sucessão patrimonial e longo prazo"
   }
 ]
