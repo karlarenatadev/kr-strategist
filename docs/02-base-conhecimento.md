@@ -2,54 +2,40 @@
 
 ## Dados Utilizados
 
-Descreva se usou os arquivos da pasta `data`, por exemplo:
+Neste projeto, utilizamos um conjunto de dados expandido para simular a realidade de um empreendedor que mistura finanças pessoais e empresariais.
 
 | Arquivo | Formato | Utilização no Agente |
 |---------|---------|---------------------|
-| `historico_atendimento.csv` | CSV | Contextualizar interações anteriores |
-| `perfil_investidor.json` | JSON | Personalizar recomendações |
-| `produtos_financeiros.json` | JSON | Sugerir produtos adequados ao perfil |
-| `transacoes.csv` | CSV | Analisar padrão de gastos do cliente |
-
-> [!TIP]
-> **Quer um dataset mais robusto?** Você pode utilizar datasets públicos do [Hugging Face](https://huggingface.co/datasets) relacionados a finanças, desde que sejam adequados ao contexto do desafio.
+| `transacoes.csv` | CSV | Analisar fluxo de caixa misto (PF/PJ) e categorizar despesas por centro de custo. |
+| `dividas_e_parcelamentos.csv` | CSV | **(Novo)** Projetar o comprometimento de renda futura e calcular o "Sobrevivência Runway". |
+| `perfil_investidor.json` | JSON | Identificar perfil de risco e dados do negócio (regime tributário, meta de giro). |
+| `produtos_financeiros.json` | JSON | Sugerir alocação de caixa (LCI/CDB) ou investimentos de longo prazo. |
+| `historico_atendimento.csv` | CSV | Dar contexto de "memória" para evitar perguntas repetitivas. |
 
 ---
 
 ## Adaptações nos Dados
 
-> Você modificou ou expandiu os dados mockados? Descreva aqui.
+Para tornar o agente um verdadeiro "CFO Digital", os dados originais foram significativamente enriquecidos:
 
-[Sua descrição aqui]
+1.  **Expansão de Volume:** As bases foram aumentadas para conter entre 10 a 20 registros cada, permitindo testes de padrões mais complexos.
+2.  **Novas Colunas em `transacoes.csv`:**
+    * `origem_recurso`: Identifica se o dinheiro saiu da conta Pessoa Física (PF) ou Jurídica (PJ).
+    * `centro_custo`: Categoriza o gasto (ex: Marketing, Vida Pessoal, Ferramentas).
+    * `dedutivel`: Flag para identificar despesas que podem abater impostos.
+3.  **Criação de `dividas_e_parcelamentos.csv`:** Um dataset novo para mapear parcelas futuras (cartão, empréstimos), essencial para o cálculo de fluxo de caixa projetado.
+4.  **Dados de Negócio no JSON:** Inclusão de campos como `regime_tributario` e `reserva_giro_necessaria` no perfil do investidor.
 
 ---
 
 ## Estratégia de Integração
 
 ### Como os dados são carregados?
-> Descreva como seu agente acessa a base de conhecimento.
-
-[ex: Os JSON/CSV são carregados no início da sessão e incluídos no contexto do prompt]
+Os arquivos CSV e JSON são carregados utilizando a biblioteca **Pandas** no Python assim que a aplicação inicia. Eles são convertidos em *DataFrames* para facilitar filtragens (ex: "Filtrar apenas gastos da categoria Marketing do último mês").
 
 ### Como os dados são usados no prompt?
-> Os dados vão no system prompt? São consultados dinamicamente?
+Não enviamos o banco de dados inteiro para o LLM a cada mensagem para economizar tokens. A estratégia é **RAG (Retrieval-Augmented Generation) Simplificado**:
 
-[Sua descrição aqui]
-
----
-
-## Exemplo de Contexto Montado
-
-> Mostre um exemplo de como os dados são formatados para o agente.
-
-```
-Dados do Cliente:
-- Nome: João Silva
-- Perfil: Moderado
-- Saldo disponível: R$ 5.000
-
-Últimas transações:
-- 01/11: Supermercado - R$ 450
-- 03/11: Streaming - R$ 55
-...
-```
+1.  O usuário faz uma pergunta (ex: "Como está meu fluxo de caixa?").
+2.  O script Python pré-processa os dados (calcula totais, separa PF de PJ).
+3.
