@@ -1,0 +1,11 @@
+descricao,valor_parcela,parcelas_restantes,vencimento_proxima,taxa_juros_mensal,tipo_divida
+Notebook Dell Trabalho,450.00,8,2025-11-05,0.0,Parcelamento Cartão
+Empréstimo Capital Giro,1200.00,12,2025-11-10,2.5,Empréstimo Bancário
+Iphone 15 Pessoal,600.00,10,2025-11-02,0.0,Parcelamento Cartão
+Cadeira Ergonomica,150.00,3,2025-11-15,0.0,Parcelamento Cartão
+Mentoria Vendas,500.00,5,2025-11-20,0.0,Boleto
+Financiamento Carro,1100.00,36,2025-11-08,1.49,Financiamento
+Antecipação Recebíveis,300.00,4,2025-11-01,3.0,Antecipação
+Seguro Auto,250.00,2,2025-11-12,0.0,Parcelamento Cartão
+Empréstimo Familiar,1000.00,6,2025-12-01,0.0,Pessoal
+Acordo Dívida Antiga,200.00,10,2025-11-30,1.0,Renegociação
