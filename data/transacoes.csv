@@ -1,11 +1,21 @@
-data,descricao,categoria,valor,tipo
-2025-10-01,Salário,receita,5000.00,entrada
-2025-10-02,Aluguel,moradia,1200.00,saida
-2025-10-03,Supermercado,alimentacao,450.00,saida
-2025-10-05,Netflix,lazer,55.90,saida
-2025-10-07,Farmácia,saude,89.00,saida
-2025-10-10,Restaurante,alimentacao,120.00,saida
-2025-10-12,Uber,transporte,45.00,saida
-2025-10-15,Conta de Luz,moradia,180.00,saida
-2025-10-20,Academia,saude,99.00,saida
-2025-10-25,Combustível,transporte,250.00,saida
+data,descricao,categoria,valor,tipo,origem_recurso,centro_custo,status,dedutivel
+2025-10-01,Recebimento Cliente A,receita,5000.00,entrada,PJ,Projeto E-com,pago,sim
+2025-10-02,Aluguel Coworking,operacional,800.00,saida,PJ,Custo Fixo,pago,sim
+2025-10-03,Supermercado Casa,alimentacao,450.00,saida,PF,Vida Pessoal,pago,nao
+2025-10-05,Hospedagem Site,tecnologia,55.90,saida,PJ,Custo Fixo,pago,sim
+2025-10-05,Netflix,lazer,55.90,saida,PF,Vida Pessoal,pago,nao
+2025-10-07,Farmácia,saude,89.00,saida,PF,Vida Pessoal,pago,nao
+2025-10-10,Almoço com Cliente,comercial,120.00,saida,PJ,Vendas,pago,sim
+2025-10-12,Uber Reunião,transporte,45.00,saida,PJ,Vendas,pago,sim
+2025-10-15,Conta de Luz Escritório,operacional,180.00,saida,PJ,Custo Fixo,agendado,sim
+2025-10-15,Prolabore Retirada,pessoal,2000.00,saida,PJ,Salário Sócios,agendado,nao
+2025-10-16,Recebimento Cliente B,receita,3500.00,entrada,PJ,Consultoria,pago,sim
+2025-10-20,Academia,saude,99.00,saida,PF,Vida Pessoal,pago,nao
+2025-10-22,Compra Licença Adobe,tecnologia,250.00,saida,PJ,Ferramentas,pago,sim
+2025-10-25,Combustível,transporte,250.00,saida,PF,Vida Pessoal,pago,nao
+2025-10-26,Jantar Comemorativo,lazer,300.00,saida,PF,Vida Pessoal,pago,nao
+2025-10-27,Anúncios Instagram,marketing,500.00,saida,PJ,Marketing,pago,sim
+2025-10-28,Manutenção Notebook,manutencao,450.00,saida,PJ,Equipamentos,pago,sim
+2025-10-29,Curso Marketing Digital,educacao,900.00,saida,PJ,Treinamento,pago,sim
+2025-10-30,Café da Tarde,alimentacao,35.00,saida,PF,Vida Pessoal,pago,nao
+2025-10-31,Tarifa Bancária PJ,financeiro,89.90,saida,PJ,Despesa Bancária,pago,sim
