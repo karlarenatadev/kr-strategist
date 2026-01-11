@@ -38,4 +38,29 @@ Não enviamos o banco de dados inteiro para o LLM a cada mensagem para economiza
 
 1.  O usuário faz uma pergunta (ex: "Como está meu fluxo de caixa?").
 2.  O script Python pré-processa os dados (calcula totais, separa PF de PJ).
-3.
+3.  Um **resumo estruturado** é injetado no *System Prompt* dinamicamente.
+
+---
+
+## Exemplo de Contexto Montado
+
+Abaixo, um exemplo de como as informações são apresentadas ao Agente (LLM) "por trás dos panos":
+
+```text
+CONTEXTO FINANCEIRO ATUAL (Atualizado em: 2025-10-31):
+
+1. PERFIL DO CLIENTE:
+   - Nome: João Silva (PJ: Simples Nacional)
+   - Meta de Giro: R$ 15.000 | Atual: R$ 3.000 (ALERTA: Baixo)
+
+2. RESUMO DO MÊS (Outubro/2025):
+   - Receita PJ: R$ 8.500,00
+   - Gastos PJ: R$ 2.189,90 (Principais: Marketing, Ferramentas)
+   - Gastos PF Pagos com Conta PJ (ERRO): R$ 0,00 (Parabéns! Nenhuma mistura detectada hoje)
+   - Gastos Pessoais Totais: R$ 4.200,00
+
+3. DÍVIDAS E COMPROMETIMENTOS FUTUROS:
+   - Total em Parcelas para Nov/2025: R$ 1.650,00
+   - Destaque: Parcela 8/8 Notebook Trabalho (R$ 450,00) - Finaliza em breve.
+
+INSTRUÇÃO: Com base nisso, responda à pergunta do usuário focando na recomposição do Capital de Giro.
