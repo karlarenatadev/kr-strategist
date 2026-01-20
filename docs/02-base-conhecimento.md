@@ -1,66 +1,71 @@
 # Base de Conhecimento
 
-## Dados Utilizados
+## Visão Geral dos Dados
 
-Neste projeto, utilizamos um conjunto de dados expandido para simular a realidade de um empreendedor que mistura finanças pessoais e empresariais.
+O KR-Strategist utiliza uma arquitetura de dados híbrida, dividida em dois "hemisférios": o **Cofre** (Dados Financeiros) e o **Playbook** (Dados Comerciais). Isso permite que o agente atue simultaneamente como CFO e Diretor Comercial.
 
-| Arquivo | Formato | Utilização no Agente |
-|---------|---------|---------------------|
-| `transacoes.csv` | CSV | Analisar fluxo de caixa misto (PF/PJ) e categorizar despesas por centro de custo. |
-| `dividas_e_parcelamentos.csv` | CSV | **(Novo)** Projetar o comprometimento de renda futura e calcular o "Sobrevivência Runway". |
-| `perfil_investidor.json` | JSON | Identificar perfil de risco e dados do negócio (regime tributário, meta de giro). |
-| `produtos_financeiros.json` | JSON | Sugerir alocação de caixa (LCI/CDB) ou investimentos de longo prazo. |
-| `historico_atendimento.csv` | CSV | Dar contexto de "memória" para evitar perguntas repetitivas. |
+### 1. O Cofre (Módulo Financeiro)
 
----
+| Arquivo | Formato | Função no Agente |
+|---------|---------|------------------|
+| `transacoes.csv` | CSV | **Fonte da Verdade Financeira.** Contém o extrato bancário unificado. Usado para calcular saldo, separar PF/PJ e gerar alertas de fluxo de caixa. |
+| `produtos_financeiros.json` | JSON | **Catálogo de Investimentos.** Lista os produtos disponíveis no banco (CDB, LCI, Fundos) com regras de aporte mínimo e rentabilidade. |
+| `dividas_e_parcelamentos.csv` | CSV | **Radar de Compromissos.** Mapeia parcelas futuras para impedir que o usuário gaste dinheiro que já está comprometido. |
 
-## Adaptações nos Dados
+### 2. O Playbook (Módulo Comercial)
 
-Para tornar o agente um verdadeiro "CFO Digital", os dados originais foram significativamente enriquecidos:
-
-1.  **Expansão de Volume:** As bases foram aumentadas para conter entre 10 a 20 registros cada, permitindo testes de padrões mais complexos.
-2.  **Novas Colunas em `transacoes.csv`:**
-    * `origem_recurso`: Identifica se o dinheiro saiu da conta Pessoa Física (PF) ou Jurídica (PJ).
-    * `centro_custo`: Categoriza o gasto (ex: Marketing, Vida Pessoal, Ferramentas).
-    * `dedutivel`: Flag para identificar despesas que podem abater impostos.
-3.  **Criação de `dividas_e_parcelamentos.csv`:** Um dataset novo para mapear parcelas futuras (cartão, empréstimos), essencial para o cálculo de fluxo de caixa projetado.
-4.  **Dados de Negócio no JSON:** Inclusão de campos como `regime_tributario` e `reserva_giro_necessaria` no perfil do investidor.
+| Arquivo | Formato | Função no Agente |
+|---------|---------|------------------|
+| `objecoes_e_respostas.json` | JSON | **Cérebro de Vendas.** Contém scripts, gatilhos mentais e técnicas de contorno de objeções (ex: "Tá caro", "Vou pensar"). |
+| `historico_posts_analytics.csv` | CSV | **Inteligência de Marketing.** Histórico de posts com dados de engajamento vs. conversão, usado para sugerir melhorias na estratégia de conteúdo. |
 
 ---
 
-## Estratégia de Integração
+## Estrutura e Enriquecimento dos Dados
 
-### Como os dados são carregados?
-Os arquivos CSV e JSON são carregados utilizando a biblioteca **Pandas** no Python assim que a aplicação inicia. Eles são convertidos em *DataFrames* para facilitar filtragens (ex: "Filtrar apenas gastos da categoria Marketing do último mês").
+Para suportar as decisões complexas do "Gerente Geral", os dados foram estruturados com campos específicos:
 
-### Como os dados são usados no prompt?
-Não enviamos o banco de dados inteiro para o LLM a cada mensagem para economizar tokens. A estratégia é **RAG (Retrieval-Augmented Generation) Simplificado**:
+### A. Dados Financeiros (Foco em Compliance)
+O arquivo `transacoes.csv` possui colunas estratégicas para detectar a saúde do negócio:
+* `origem_recurso`: Identifica se o pagamento saiu da conta **PF** ou **PJ**.
+* `centro_custo`: Categoriza o gasto (ex: "Marketing", "Vida Pessoal").
+* `dedutivel`: Flag para planejamento fiscal simples.
 
-1.  O usuário faz uma pergunta (ex: "Como está meu fluxo de caixa?").
-2.  O script Python pré-processa os dados (calcula totais, separa PF de PJ).
-3.  Um **resumo estruturado** é injetado no *System Prompt* dinamicamente.
+### B. Dados Comerciais (Foco em Conversão)
+O arquivo `objecoes_e_respostas.json` não é apenas texto, ele possui lógica de aplicação:
+* `gatilho`: A palavra-chave que o cliente diz (ex: "desconto").
+* `fase`: Em qual etapa do funil isso ocorre (ex: "Negociação").
+* `regra`: A instrução de ouro por trás do script (ex: "Nunca dar desconto sem pedir algo em troca").
 
 ---
 
-## Exemplo de Contexto Montado
+## Estratégia de Integração (RAG Seletivo)
 
-Abaixo, um exemplo de como as informações são apresentadas ao Agente (LLM) "por trás dos panos":
+Para economizar tokens e manter o agente focado, utilizamos uma estratégia de **Injeção de Contexto Dinâmica**:
+
+1.  **Carregamento Inicial:** Ao iniciar, o Python carrega todos os CSVs e JSONs para a memória RAM (DataFrames e Dictionaries).
+2.  **Pré-Processamento:**
+    * *Financeiro:* O script calcula saldo atual, total de entradas/saídas e filtra produtos que o cliente pode pagar (Filtro de Aporte Mínimo).
+    * *Vendas:* O script indexa os gatilhos para busca rápida.
+3.  **Montagem do Prompt:** O System Prompt recebe apenas o resumo processado, não os arquivos brutos inteiros.
+
+---
+
+## Exemplo de Contexto Injetado
+
+Abaixo, um exemplo de como o "Cérebro" do agente enxerga os dados em tempo real:
 
 ```text
-CONTEXTO FINANCEIRO ATUAL (Atualizado em: 2025-10-31):
+--- CONTEXTO ATUAL DA AGÊNCIA ---
 
-1. PERFIL DO CLIENTE:
-   - Nome: João Silva (PJ: Simples Nacional)
-   - Meta de Giro: R$ 15.000 | Atual: R$ 3.000 (ALERTA: Baixo)
+[MÓDULO CFO - STATUS: ATIVO]
+- Saldo Disponível: R$ 5.200,00 (ATENÇÃO: R$ 1.500 já comprometidos com dívidas futuras)
+- Mistura PF/PJ Detectada: 2 ocorrências este mês.
+- Oportunidade de Investimento: Cliente tem saldo para "LCI 90 Dias" (Mínimo R$ 5k).
 
-2. RESUMO DO MÊS (Outubro/2025):
-   - Receita PJ: R$ 8.500,00
-   - Gastos PJ: R$ 2.189,90 (Principais: Marketing, Ferramentas)
-   - Gastos PF Pagos com Conta PJ (ERRO): R$ 0,00 (Parabéns! Nenhuma mistura detectada hoje)
-   - Gastos Pessoais Totais: R$ 4.200,00
+[MÓDULO ESTRATEGISTA - STATUS: ATIVO]
+- Scripts Carregados: 15 técnicas (Ancoragem, Escassez, Prova Social).
+- Top Post da Semana: "Erros de Gestão" (Alta Conversão).
+- Recomendação do Dia: Usar o saldo parado para tráfego pago no post "Erros de Gestão".
 
-3. DÍVIDAS E COMPROMETIMENTOS FUTUROS:
-   - Total em Parcelas para Nov/2025: R$ 1.650,00
-   - Destaque: Parcela 8/8 Notebook Trabalho (R$ 450,00) - Finaliza em breve.
-
-INSTRUÇÃO: Com base nisso, responda à pergunta do usuário focando na recomposição do Capital de Giro.
+INSTRUÇÃO: Atue com base nesses dois pilares para orientar o usuário.

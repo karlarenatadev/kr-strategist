@@ -2,65 +2,67 @@
 
 ## Como Avaliar seu Agente
 
-Para o **Fin-Strategist**, a avaliação foca na precisão dos cálculos de fluxo de caixa e na rigidez quanto à separação de contas (PF vs PJ).
+Para o **KR-Strategist**, a avaliação é dupla: precisamos medir a **rigidez financeira** (CFO) e a **persuasão comercial** (Estrategista).
 
 A avaliação combina:
-1. **Testes de Lógica (Unitários):** Verificar se ele soma corretamente as dívidas.
-2. **Testes de Comportamento:** Verificar se ele detecta "mistura de contas".
+1.  **Testes de Lógica (Unitários):** Verificar se ele soma as dívidas corretamente e filtra produtos pelo aporte mínimo.
+2.  **Testes de Comportamento (Roleplay):** Verificar se ele detecta mistura de contas e se aplica técnicas de vendas (SPIN/Ancoragem) antes de dar preços.
 
 ---
 
 ## Métricas de Qualidade
 
-| Métrica | O que avalia | Exemplo de teste |
-|---------|--------------|------------------|
-| **Assertividade Contábil** | O agente identificou corretamente a origem do recurso? | Pagar conta pessoal com cartão PJ deve gerar um **ALERTA**. |
-| **Segurança Regulatória** | O agente evitou recomendar ativos específicos (Compliance CVM)? | Perguntar "Qual ação compro hoje?" e ele negar a resposta. |
-| **Coerência Estratégica** | A resposta considera o endividamento futuro? | Ele deve vetar uma compra supérflua se houver dívidas vencendo no `dividas_e_parcelamentos.csv`. |
+| Métrica | O que avalia | Exemplo de Sucesso |
+| :--- | :--- | :--- |
+| **Assertividade Contábil** | O agente protegeu o caixa da empresa? | Ao ver gasto pessoal na conta PJ, ele emite um **ALERTA DE COMPLIANCE**. |
+| **Aderência ao Playbook** | O agente usou o script de vendas correto? | Se o cliente diz "tá caro", o agente usa a técnica de "Ancoragem" (do JSON), não uma desculpa genérica. |
+| **Disciplina de Preço** | O agente evitou entregar o preço de bandeja? | Se perguntarem "quanto custa", ele devolve com uma pergunta (SPIN) em vez do valor. |
+| **Coerência Híbrida** | A recomendação de venda respeita o saldo atual? | Ele veta uma campanha de tráfego pago se o saldo no `transacoes.csv` for insuficiente. |
 
 > [!TIP]
-> Peça para 3 amigos tentarem "enganar" o agente, pedindo para ele aprovar um gasto supérfluo enquanto a empresa está sem caixa. Se o agente for "bonzinho" e aprovar, a métrica de **Coerência** falhou. Ele precisa ser rigoroso.
+> **O Teste do "Advogado do Diabo":** Peça para um amigo tentar arrancar o preço do agente logo na primeira mensagem. Se o agente der o preço sem qualificar, a métrica de **Disciplina de Preço** falhou.
 
 ---
 
 ## Exemplos de Cenários de Teste
 
-Use estes cenários para validar se o seu CFO Digital está afiado:
+Use estes cenários para validar as duas personalidades do seu agente:
 
-### Teste 1: Detecção de Mistura Patrimonial (Obrigatório)
-- **Pergunta:** "Gastei R$ 200,00 no Outback com o cartão da empresa. Tem problema?"
-- **Resposta esperada:** O agente deve emitir um ALERTA de compliance e sugerir o ressarcimento do caixa ou classificação como pró-labore.
-- **Resultado:** [ ] Aprovou  [ ] Falhou (Não alertou)
+### Teste 1: O CFO Rígido (Compliance)
+- **Pergunta:** "Paguei meu almoço de domingo com o cartão da empresa. Tem problema?"
+- **Resposta esperada:** O agente deve agir friamente, apontar o erro de misturar PF/PJ e sugerir descontar do pró-labore.
+- **Resultado:** [ ] Reprovou a atitude  [ ] Aceitou passivamente (Falha)
 
-### Teste 2: Análise de Endividamento (Matemática)
-- **Pergunta:** "Quanto já tenho comprometido de parcelas para o mês que vem?"
-- **Resposta esperada:** O agente deve somar os valores do arquivo `dividas_e_parcelamentos.csv` (aprox. R$ 1.650,00) e apresentar o total.
-- **Resultado:** [ ] Cálculo Exato  [ ] Erro de Cálculo
+### Teste 2: O Estrategista de Vendas (Objeção)
+- **Pergunta:** "O cliente disse que vai falar com a esposa e depois retorna. O que eu digo?"
+- **Resposta esperada:** O agente deve buscar no `objecoes_e_respostas.json` o script para "Vou pensar" ou "Terceiro Decisor" e sugerir uma resposta que isole a objeção.
+- **Resultado:** [ ] Trouxe o script certo  [ ] Alucinou uma resposta genérica
 
-### Teste 3: Recomendação de Investimento (Anti-Alucinação)
-- **Pergunta:** "Devo comprar Bitcoin ou PETR4 agora?"
-- **Resposta esperada:** O agente deve recusar a recomendação específica e sugerir classes de ativos (ex: "Criptoativos são voláteis, seu perfil é conservador...") ou focar no caixa da empresa.
-- **Resultado:** [ ] Recusou corretamente  [ ] Deu recomendação ilegal
+### Teste 3: O Teste Híbrido (Onde investir?)
+- **Contexto:** Saldo no CSV é de R$ 500,00. Produto mínimo no JSON custa R$ 1.000,00.
+- **Pergunta:** "Tenho dinheiro parado. Qual a melhor aplicação do banco pra mim hoje?"
+- **Resposta esperada:** O agente deve dizer que **nenhum** produto está disponível para esse saldo e sugerir acumular mais caixa antes de investir. (Não pode sugerir o produto de R$ 1k).
+- **Resultado:** [ ] Respeitou o aporte mínimo  [ ] Ofereceu produto indisponível (Alucinação)
 
-### Teste 4: Pergunta Fora do Escopo
-- **Pergunta:** "Me ajuda a criar um plano de marketing para o Instagram?"
-- **Resposta esperada:** "Sou seu CFO Financeiro. Para marketing, sugiro contratar um especialista. Posso ajudar a definir o *orçamento* para isso."
-- **Resultado:** [ ] Manteve a persona  [ ] Alucinou sobre marketing
+### Teste 4: A Regra de Ouro (Preço)
+- **Pergunta:** "Quanto custa a sua mentoria?"
+- **Resposta esperada:** Uma pergunta de qualificação (ex: "Antes de falar de valores, qual seu maior gargalo hoje?").
+- **Resultado:** [ ] Fez SPIN Selling  [ ] Deu o preço direto (Falha Crítica)
 
 ---
 
 ## Resultados Preliminares
 
 **O que funcionou bem:**
-- A detecção de pagamentos com a conta errada (PF/PJ) está muito assertiva.
-- O tom de voz "CFO Rígido" gera mais autoridade.
+- A detecção de mistura PF/PJ continua muito assertiva.
+- A busca por scripts de vendas ("tá caro") está funcionando via RAG.
 
-**O que pode melhorar:**
-- Às vezes o agente esquece de verificar o saldo da "Reserva de Emergência" antes de sugerir novos gastos.
+**O que precisa de ajuste:**
+- Às vezes, quando pergunto de investimento, ele esquece de checar se o saldo cobre o aporte mínimo. (Ajustar lógica no `app.py`).
 
 ---
 
-## Métricas Técnicas (Opcional)
+## Métricas Técnicas
 
-- **Latency:** Tempo de resposta para processar o CSV de transações (Ideal < 3s).
-- **Tool Usage:** Frequência com que o agente aciona a calculadora Python (Deve ser 100% das vezes que envolve números).
+- **Retrieval Precision (RAG):** O agente encontrou o script de venda correto no JSON? (Meta: 100% de acerto para gatilhos exatos).
+- **Latency:** O tempo para carregar os dois contextos (Financeiro + Vendas) deve ser imperceptível (< 3s).

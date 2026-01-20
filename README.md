@@ -1,149 +1,103 @@
-# 🤖 Agente Financeiro Inteligente com IA Generativa
+# 🏦 KR-Strategist: O Gerente Geral com IA
 
-## Contexto
+> **"Protegendo seu caixa enquanto alavanca suas vendas."**
 
-Os assistentes virtuais no setor financeiro estão evoluindo de simples chatbots reativos para **agentes inteligentes e proativos**. Neste desafio, você vai idealizar e prototipar um agente financeiro que utiliza IA Generativa para:
+O **KR-Strategist** é um agente de Inteligência Artificial Híbrido projetado para resolver a maior dor do pequeno empreendedor: a necessidade de ser **Diretor Financeiro (CFO)** e **Diretor Comercial** ao mesmo tempo.
 
-- **Antecipar necessidades** ao invés de apenas responder perguntas
-- **Personalizar** sugestões com base no contexto de cada cliente
-- **Cocriar soluções** financeiras de forma consultiva
-- **Garantir segurança** e confiabilidade nas respostas (anti-alucinação)
-
-> [!TIP]
-> Na pasta [`examples/`](./examples/) você encontra referências de implementação para cada etapa deste desafio.
+Diferente de chatbots comuns, ele possui uma **dupla personalidade profissional** que alterna automaticamente baseada na intenção do usuário e na saúde do caixa.
 
 ---
 
-## O Que Você Deve Entregar
+## 🧠 Como Funciona (A Dupla Personalidade)
 
-### 1. Documentação do Agente
+O sistema opera com dois módulos integrados:
 
-Defina **o que** seu agente faz e **como** ele funciona:
+### 1. 🛡️ Modo CFO (Defensivo)
+* **Objetivo:** Proteger o fluxo de caixa e garantir a sobrevivência do negócio.
+* **Funcionalidades:**
+    * Análise de Extrato Bancário (`transacoes.csv`).
+    * Detecção de Mistura Patrimonial (Gastos PF na conta PJ).
+    * Bloqueio de compras supérfluas se houver dívidas futuras (`dividas_e_parcelamentos.csv`).
 
-- **Caso de Uso:** Qual problema financeiro ele resolve? (ex: consultoria de investimentos, planejamento de metas, alertas de gastos)
-- **Persona e Tom de Voz:** Como o agente se comporta e se comunica?
-- **Arquitetura:** Fluxo de dados e integração com a base de conhecimento
-- **Segurança:** Como evitar alucinações e garantir respostas confiáveis?
-
-📄 **Template:** [`docs/01-documentacao-agente.md`](./docs/01-documentacao-agente.md)
-
----
-
-### 2. Base de Conhecimento
-
-Utilize os **dados mockados** disponíveis na pasta [`data/`](./data/) para alimentar seu agente:
-
-| Arquivo | Formato | Descrição |
-|---------|---------|-----------|
-| `transacoes.csv` | CSV | Histórico de transações do cliente |
-| `historico_atendimento.csv` | CSV | Histórico de atendimentos anteriores |
-| `perfil_investidor.json` | JSON | Perfil e preferências do cliente |
-| `produtos_financeiros.json` | JSON | Produtos e serviços disponíveis |
-
-Você pode adaptar ou expandir esses dados conforme seu caso de uso.
-
-📄 **Template:** [`docs/02-base-conhecimento.md`](./docs/02-base-conhecimento.md)
+### 2. 🚀 Modo Estrategista (Ofensivo)
+* **Objetivo:** Gerar receita nova e fechar vendas.
+* **Funcionalidades:**
+    * Geração de Scripts de Vendas baseados em metodologia SPIN Selling.
+    * Quebra de Objeções (ex: "Tá caro", "Vou pensar") consultando o Playbook (`objecoes.json`).
+    * Auditoria de Conteúdo (Engajamento vs. Conversão).
 
 ---
 
-### 3. Prompts do Agente
+## ⚡ Radar de Oportunidades (O Diferencial)
 
-Documente os prompts que definem o comportamento do seu agente:
+O KR-Strategist conecta os dois mundos. Ele analisa o saldo do cliente e sugere a melhor ação comercial:
 
-- **System Prompt:** Instruções gerais de comportamento e restrições
-- **Exemplos de Interação:** Cenários de uso com entrada e saída esperada
-- **Tratamento de Edge Cases:** Como o agente lida com situações limite
-
-📄 **Template:** [`docs/03-prompts.md`](./docs/03-prompts.md)
+> *“Se o cliente tem R$ 5.000 parados (Dados Financeiros), o agente sugere ofertar o LCI de Liquidez Diária usando o Gatilho da Segurança (Dados de Vendas).”*
 
 ---
 
-### 4. Aplicação Funcional
+## 📂 Estrutura do Projeto
 
-Desenvolva um **protótipo funcional** do seu agente:
-
-- Chatbot interativo (sugestão: Streamlit, Gradio ou similar)
-- Integração com LLM (via API ou modelo local)
-- Conexão com a base de conhecimento
-
-📁 **Pasta:** [`src/`](./src/)
-
----
-
-### 5. Avaliação e Métricas
-
-Descreva como você avalia a qualidade do seu agente:
-
-**Métricas Sugeridas:**
-- Precisão/assertividade das respostas
-- Taxa de respostas seguras (sem alucinações)
-- Coerência com o perfil do cliente
-
-📄 **Template:** [`docs/04-metricas.md`](./docs/04-metricas.md)
-
----
-
-### 6. Pitch
-
-Grave um **pitch de 3 minutos** (estilo elevador) apresentando:
-
-- Qual problema seu agente resolve?
-- Como ele funciona na prática?
-- Por que essa solução é inovadora?
-
-📄 **Template:** [`docs/05-pitch.md`](./docs/05-pitch.md)
-
----
-
-## Ferramentas Sugeridas
-
-Todas as ferramentas abaixo possuem versões gratuitas:
-
-| Categoria | Ferramentas |
-|-----------|-------------|
-| **LLMs** | [ChatGPT](https://chat.openai.com/), [Copilot](https://copilot.microsoft.com/), [Gemini](https://gemini.google.com/), [Claude](https://claude.ai/), [Ollama](https://ollama.ai/) |
-| **Desenvolvimento** | [Streamlit](https://streamlit.io/), [Gradio](https://www.gradio.app/), [Google Colab](https://colab.research.google.com/) |
-| **Orquestração** | [LangChain](https://www.langchain.com/), [LangFlow](https://www.langflow.org/), [CrewAI](https://www.crewai.com/) |
-| **Diagramas** | [Mermaid](https://mermaid.js.org/), [Draw.io](https://app.diagrams.net/), [Excalidraw](https://excalidraw.com/) |
-
----
-
-## Estrutura do Repositório
-
-```
-📁 lab-agente-financeiro/
+```text
+kr-strategist/
 │
-├── 📄 README.md
+├── data/                          # O Cérebro do Agente
+│   ├── transacoes.csv             # Extrato Bancário (O Cofre)
+│   ├── produtos_financeiros.json  # Catálogo de Investimentos
+│   ├── objecoes_e_respostas.json  # Scripts de Vendas (O Playbook)
+│   └── historico_posts.csv        # Analytics de Marketing
 │
-├── 📁 data/                          # Dados mockados para o agente
-│   ├── historico_atendimento.csv     # Histórico de atendimentos (CSV)
-│   ├── perfil_investidor.json        # Perfil do cliente (JSON)
-│   ├── produtos_financeiros.json     # Produtos disponíveis (JSON)
-│   └── transacoes.csv                # Histórico de transações (CSV)
+├── docs/                          # Documentação do Desafio
+│   ├── 01-documentacao-agente.md  # Visão Geral e Arquitetura
+│   ├── 02-base-conhecimento.md    # Estrutura dos Dados
+│   ├── 03-prompts.md              # Engenharia de Prompt (System Prompt)
+│   ├── 04-metricas.md             # Testes e Validação
+│   └── 05-pitch.md                # Roteiro de Apresentação
 │
-├── 📁 docs/                          # Documentação do projeto
-│   ├── 01-documentacao-agente.md     # Caso de uso e arquitetura
-│   ├── 02-base-conhecimento.md       # Estratégia de dados
-│   ├── 03-prompts.md                 # Engenharia de prompts
-│   ├── 04-metricas.md                # Avaliação e métricas
-│   └── 05-pitch.md                   # Roteiro do pitch
+├── src/                           # Código Fonte
+│   └── app.py                     # Aplicação Streamlit (Cockpit do Gerente)
 │
-├── 📁 src/                           # Código da aplicação
-│   └── app.py                        # (exemplo de estrutura)
-│
-├── 📁 assets/                        # Imagens e diagramas
-│   └── ...
-│
-└── 📁 examples/                      # Referências e exemplos
-    └── README.md
-```
+└── README.md                      # Este arquivo
+
+## 🛠️ Como Rodar o Projeto
+
+**Pré-requisitos:** Python 3.10+ e uma chave da OpenAI.
+
+1. **Clone o repositório:**
+   ```bash
+   git clone [https://github.com/seu-usuario/kr-strategist.git](https://github.com/seu-usuario/kr-strategist.git)
+   cd kr-strategist
+
+   ### Instale as dependências:
+
+    ```bash
+    pip install streamlit pandas openai
+
+    ###Execute a aplicação: 
+
+    ```bash
+    streamlit run src/app.py
+
+### Acesse no navegador:
+
+O painel abrirá automaticamente em `http://localhost:8501`. Insira sua API Key na barra lateral para ativar a inteligência.
 
 ---
 
-## Dicas Finais
+## 📊 Métricas de Sucesso
 
-1. **Comece pelo prompt:** Um bom system prompt é a base de um agente eficaz
-2. **Use os dados mockados:** Eles garantem consistência e evitam problemas com dados sensíveis
-3. **Foque na segurança:** No setor financeiro, evitar alucinações é crítico
-4. **Teste cenários reais:** Simule perguntas que um cliente faria de verdade
-5. **Seja direto no pitch:** 3 minutos passam rápido, vá ao ponto
+O agente é avaliado por:
+
+* **Rigor Financeiro:** Ele vetou compras quando o saldo era insuficiente?
+* **Persuasão Comercial:** Ele usou o script de ancoragem correto quando o cliente pediu desconto?
+* **Segurança:** Ele evitou alucinar produtos que não existem no catálogo?
+
+---
+
+## 📢 Pitch
+
+> "O KR-Strategist não apenas conta moedas; ele cria estratégias. Ele transforma 'eu-quipes' desorganizadas em empresas estruturadas, unindo a prudência de um banco com a agressividade de uma consultoria de vendas."
+
+---
+
+Desenvolvido por **Karla Renata** para o Desafio de IA Generativa.

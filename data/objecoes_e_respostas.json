@@ -1,0 +1,32 @@
+[
+  {
+    "gatilho": "quanto custa",
+    "fase": "ancoragem",
+    "resposta_sugerida": "Oi, [Nome]! Fico feliz que o conteúdo tenha ressoado. Antes de falarmos de investimento, preciso entender se o meu método é o ideal para o seu momento atual. Qual é o maior gargalo de vendas que você enfrenta hoje?",
+    "regra": "Nunca passar preço sem ancorar valor primeiro."
+  },
+  {
+    "gatilho": "preço",
+    "fase": "ancoragem",
+    "resposta_sugerida": "Oi, [Nome]! Fico feliz que o conteúdo tenha ressoado. Antes de falarmos de investimento, preciso entender se o meu método é o ideal para o seu momento atual. Qual é o maior gargalo de vendas que você enfrenta hoje?",
+    "regra": "Nunca passar preço sem ancorar valor primeiro."
+  },
+  {
+    "gatilho": "vou pensar",
+    "fase": "quebra_objecao",
+    "resposta_sugerida": "Entendo perfeitamente, [Nome]. Geralmente, quando me dizem isso, a dúvida está no retorno sobre o investimento ou no tempo de implementação. O que te preocupa mais hoje?",
+    "regra": "Isolar a objeção real (dinheiro ou tempo)."
+  },
+  {
+    "gatilho": "caro",
+    "fase": "valor",
+    "resposta_sugerida": "Eu entendo que o investimento parece alto à primeira vista. Mas se a gente considerar que uma única venda sua usando a técnica X já paga a mentoria, faz sentido pra você priorizar isso agora?",
+    "regra": "Comparar custo vs. retorno imediato."
+  },
+  {
+    "gatilho": "não tenho tempo",
+    "fase": "prioridade",
+    "resposta_sugerida": "Justamente por isso o método foi desenhado para quem tem a rotina corrida. Você prefere continuar sem tempo tentando vender sozinho, ou aplicar um processo que automatiza essa parte?",
+    "regra": "Mostrar que a falta de tempo é o motivo da compra, não a desculpa."
+  }
+]
