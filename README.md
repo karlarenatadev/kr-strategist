@@ -13,6 +13,7 @@ Diferente de chatbots comuns, ele possui uma **dupla personalidade profissional*
 O sistema opera com dois módulos integrados:
 
 ### 1. 🛡️ Modo CFO (Defensivo)
+
 * **Objetivo:** Proteger o fluxo de caixa e garantir a sobrevivência do negócio.
 * **Funcionalidades:**
     * Análise de Extrato Bancário (`transacoes.csv`).
