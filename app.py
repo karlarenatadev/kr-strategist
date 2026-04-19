@@ -88,16 +88,15 @@ with st.sidebar:
 
 # --- 5. TRAVAS DE SEGURANÇA (Para UX na Nuvem) ---
 try:
-    # O Streamlit puxa a chave de forma invisível e segura
-    api_key = st.secrets["OPENAI_API_KEY"]
-    client = OpenAI(api_key=api_key)
+    # Puxa a chave da Groq
+    api_key = st.secrets["GROQ_API_KEY"]
+    # Configura o cliente para usar o servidor gratuito da Groq
+    client = OpenAI(
+        api_key=api_key,
+        base_url="https://api.groq.com/openai/v1" 
+    )
 except KeyError:
-    st.error("Chave de API não encontrada nas configurações de segurança do Streamlit.")
-    st.stop()
-
-# 🔴 Trava Nova: Impede a execução se não houver arquivo
-if ficheiro_transacoes is None:
-    st.info("👈 Por favor, carregue o arquivo de extrato (CSV) no painel lateral para iniciar o atendimento.")
+    st.error("Chave de API da Groq não encontrada nas configurações do Streamlit.")
     st.stop()
 
 # --- 6. PROMPT E CHATBOT (Mantém-se igual ao original) ---
@@ -142,7 +141,7 @@ if prompt:
 
     with st.chat_message("assistant"):
         stream = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="llama3-8b-8192", # Modelo gratuito, rápido e excelente para vendas
             messages=st.session_state.messages,
             stream=True
         )
