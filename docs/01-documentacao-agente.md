@@ -3,6 +3,7 @@
 ## Caso de Uso
 
 ### Problema
+
 > **Qual problema financeiro seu agente resolve?**
 
 O pequeno empreendedor sofre de dois males simultâneos: a **desorganização financeira** (mistura de contas PF/PJ e cegueira de caixa) e a **ineficiência comercial** (perda de vendas por não saber contornar objeções ou ofertar o produto certo na hora certa). Eles sangram dinheiro nas despesas e deixam dinheiro na mesa nas vendas.
