@@ -30,7 +30,12 @@ todos_produtos, scripts = carregar_playbook()
 
 # --- 3. PROCESSAMENTO DO EXTRATO DINÂMICO (CSV) ---
 def processar_transacoes(ficheiro_csv, produtos):
-    contexto = {}
+    # Inicializa o contexto base para evitar KeyError
+    contexto = {
+        'financeiro': "Aguardando carregamento do extrato...",
+        'produtos_elegiveis': "[]",
+        'qtd_produtos': 0
+    }
     saldo_atual = 0.0
     produtos_disponiveis = []
     
@@ -47,13 +52,9 @@ def processar_transacoes(ficheiro_csv, produtos):
             contexto['produtos_elegiveis'] = json.dumps(produtos_disponiveis, indent=2, ensure_ascii=False)
             contexto['qtd_produtos'] = len(produtos_disponiveis)
         except Exception as e:
-            st.error(f"Erro ao ler o CSV: {e}")
+            st.error(f"Erro ao ler o CSV: Verifique se o arquivo possui as colunas 'tipo' e 'valor'.")
             contexto['financeiro'] = "Erro ao processar extrato."
-    else:
-        contexto['financeiro'] = "Aguardando carregamento do extrato..."
-        contexto['produtos_elegiveis'] = "[]"
-        contexto['qtd_produtos'] = 0
-        
+            
     return contexto, saldo_atual, produtos_disponiveis
 
 # --- 4. PAINEL LATERAL (SIDEBAR) ---
@@ -92,6 +93,11 @@ try:
     client = OpenAI(api_key=api_key)
 except KeyError:
     st.error("Chave de API não encontrada nas configurações de segurança do Streamlit.")
+    st.stop()
+
+# 🔴 Trava Nova: Impede a execução se não houver arquivo
+if ficheiro_transacoes is None:
+    st.info("👈 Por favor, carregue o arquivo de extrato (CSV) no painel lateral para iniciar o atendimento.")
     st.stop()
 
 # --- 6. PROMPT E CHATBOT (Mantém-se igual ao original) ---
